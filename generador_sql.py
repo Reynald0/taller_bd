@@ -3,8 +3,6 @@
 import inspect, os
 import random
 
-cantidad_registros = int(input("Cuantos registros desea?  "))
-nombre_archivo = 'personas'
 nombre_tabla = "personas"
 nombres = [ 'Isabella', 'Daniel', 'Olivia', 'David', 'Alexis', 'Gabriel',
             'Sofia', 'Benjamin', 'Victoria', 'Samuel', 'Amelia', 'Lucas',
@@ -40,8 +38,10 @@ nombres = [ 'Isabella', 'Daniel', 'Olivia', 'David', 'Alexis', 'Gabriel',
 apellidos = ['Alirio', 'Suarez', 'Cordero', 'De Dios', 'De La Cruz', 'Alvarez',
             'Jimenez', 'Contreras', 'Sanchez', 'Sixto', 'Herrera', 'Villegas']
 
+destinos = ['Balancan', 'Nacajuca', 'Macuspana', 'Tacotalpa', 'Centro',
+            'Emiliano Zapata', 'Teapa', 'Huimanguillo', 'Cardenas', 'Comalcalco']
+
 ruta = os.path.dirname(__file__)
-archivo_sql = open(ruta + '/' + nombre_archivo + '.sql', 'w+')
 
 def generar_fecha_aleatoria(anio_inicio, anio_final):
     anio_aleatorio = random.randint(anio_inicio, anio_final)
@@ -66,15 +66,65 @@ def generar_fecha_aleatoria(anio_inicio, anio_final):
 
     return fecha_nac_aleatorio
 
-for numero in range(0, cantidad_registros):
+
+def generar_telefono_aleatorio():
+    numero = '99'
+    for number in range(4):
+        numero += str(random.randint(10,99))
+    return numero
+
+def generar_hora_aleatoria():
+    hora = random.randint(1,24)
+    minuto = random.randint(1,59)
+    segundo = random.randint(1,59)
+
+    return '%d:%d:%d' %(hora,minuto,segundo)
+
+
+def generar_persona(archivo):
     nombre_aleatorio =  random.choice(nombres)
     fecha_aleatorio = generar_fecha_aleatoria(1995, 2000)
     apellido_paterno_aleatorio =  random.choice(apellidos)
     apellido_materno_aleatorio =  random.choice(apellidos)
+    telefono_aleatorio = generar_telefono_aleatorio()
     socio_aleatorio = random.choice(['si', 'no'])
-    sql = """INSERT INTO `%s`
+    sql = """INSERT INTO `personas`
             (`nombre`, `apellido_paterno`, `apellido_materno`, `fecha_nac`, `tel`, `socio`)
-            VALUES ('%s', '%s', '%s', '%s', 'TELEFONO', '%s');
-            """ %(nombre_tabla, nombre_aleatorio, apellido_paterno_aleatorio, apellido_materno_aleatorio,
-            fecha_aleatorio, socio_aleatorio)
-    archivo_sql.write(sql + '\n')
+            VALUES ('%s', '%s', '%s', '%s', '%s', '%s');
+            """ %(nombre_aleatorio, apellido_paterno_aleatorio, apellido_materno_aleatorio,
+            fecha_aleatorio, telefono_aleatorio, socio_aleatorio)
+    archivo.write(sql + '\n')
+
+def generar_barco(archivo):
+    nombre_aleatorio =  random.choice(nombres)
+    amarre_aleatorio = random.randint(1, 2000)
+    cuota_aleatoria = random.uniform(500.0, 8000.0)
+    sql = """INSERT INTO `barcos` (`nombre`, `numero_amarre`, `cuota_pago`)
+            VALUES ('%s', '%d', '%.2f');
+            """ %(nombre_aleatorio, amarre_aleatorio, cuota_aleatoria)
+    archivo.write(sql + '\n')
+
+def generar_salidas(archivo):
+    #CUIDADO pueden duplicarse
+    personas_id_persona_aleatorio = random.randint(1, 20)
+    barcos_matricula_aleatorio = random.randint(1, 20)
+    #CUIDADO pueden duplicarse
+    fecha_aleatorio = generar_fecha_aleatoria(1995, 2020)
+    hora_aleatoria = generar_hora_aleatoria()
+    destino_aleatorio = random.choice(destinos)
+    sql = """INSERT INTO `barcos_salidas` (`personas_id_persona`, `barcos_matricula`, `fecha`, `hora`, `destino`)
+            VALUES ('%d', '%d', '%s', '%s', '%s');
+            """%(personas_id_persona_aleatorio, barcos_matricula_aleatorio, fecha_aleatorio, hora_aleatoria, destino_aleatorio)
+    archivo.write(sql + '\n')
+
+def generar_sql(numero_registros):
+    persona_sql = open(ruta + '/personas.sql', 'w+')
+    barco_sql = open(ruta + '/barcos.sql', 'w+')
+    barco_salida_sql = open(ruta + '/barcos_salidas.sql', 'w+')
+    for numero in range(numero_registros):
+        generar_persona(persona_sql)
+        generar_barco(barco_sql)
+        generar_salidas(barco_salida_sql)
+
+cantidad_registros = int(input("Cuantos registros desea?  "))
+generar_sql(cantidad_registros)
