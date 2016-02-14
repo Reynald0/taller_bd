@@ -3,7 +3,7 @@
 import inspect, os
 import random
 
-cantidad_registros = 1000
+cantidad_registros = int(input("Cuantos registros desea?  "))
 nombre_archivo = 'personas'
 nombre_tabla = "personas"
 nombres = [ 'Isabella', 'Daniel', 'Olivia', 'David', 'Alexis', 'Gabriel',
@@ -25,42 +25,18 @@ nombres = [ 'Isabella', 'Daniel', 'Olivia', 'David', 'Alexis', 'Gabriel',
             'Emiliano', 'Esmeralda', 'Simon', 'Veronica', 'Rafael', 'Daniella',
             'Martin', 'Miriam', 'Marco', 'Carmen', 'Roberto', 'Iris', 'Pedro',
             'Guadalupe', 'Emanuel', 'Selena', 'Abel', 'Fernanda', 'Ruben', 'Angelica',
-            'Fabian', 'Emilia', 'Emilio', 'Lia', 'Joaquin', 'Tatiana', 'Marcos',]
-"""
-'Monica	Lorenzo
-'Carolina	Armando
-'Jimena	Adan
-'Dulce	Raul
-'Talia	Julio
-'Estrella	Enrique
-'Brenda	Gerardo
-'Lilian	Pablo
-'Paola	Jaime
-'Serena	Saul
-'Celeste	Esteban
-'Viviana	Gustavo
-'Elisa	Rodrigo
-'Melina	Arturo
-'Gloria	Mauricio
-'Claudia	Orlando
-'Sandra	Hugo
-'Marisol	Salvador
-'Asia	Alfredo
-'Ada	Maximiliano
-'Rosa	Ramon
-'Isabela	Ernesto
-'Regina	Tobias
-'Elsa	Abram
-'Perla	Noe
-'Raquel	Guillermo
-'Virginia	Ezequiel
-'Patricia	Lucian
-'Linda	Alonzo
-'Marina	Felipe
-'Leila	Matias
-'America	Tomas
-'Mercedes', 'Jairo']
-"""
+            'Fabian', 'Emilia', 'Emilio', 'Lia', 'Joaquin', 'Tatiana', 'Marcos',
+            'Monica', 'Lorenzo', 'Carolina','Armando', 'Jimena', 'Adan', 'Dulce',
+            'Raul', 'Talia', 'Julio', 'Estrella', 'Enrique', 'Brenda', 'Gerardo',
+            'Lilian', 'Pablo', 'Paola', 'Jaime', 'Serena', 'Saul', 'Celeste',
+            'Esteban', 'Viviana', 'Gustavo', 'Elisa', 'Rodrigo', 'Melina', 'Arturo',
+            'Gloria', 'Mauricio', 'Claudia', 'Orlando', 'Sandra', 'Hugo', 'Marisol',
+            'Salvador', 'Asia', 'Alfredo', 'Ada', 'Maximiliano', 'Rosa', 'Ramon',
+            'Isabela', 'Ernesto', 'Regina', 'Tobias', 'Elsa', 'Abram', 'Perla',
+            'Noe', 'Raquel', 'Guillermo', 'Virginia', 'Ezequiel', 'Patricia', 'Lucian',
+            'Linda', 'Alonzo', 'Marina', 'Felipe', 'Leila', 'Matias', 'America',
+            'Tomas', 'Mercedes', 'Jairo']
+
 apellidos = ['Alirio', 'Suarez', 'Cordero', 'De Dios', 'De La Cruz', 'Alvarez',
             'Jimenez', 'Contreras', 'Sanchez', 'Sixto', 'Herrera', 'Villegas']
 
@@ -70,7 +46,7 @@ archivo_sql = open(ruta + '/' + nombre_archivo + '.sql', 'w+')
 def generar_fecha_aleatoria(anio_inicio, anio_final):
     anio_aleatorio = random.randint(anio_inicio, anio_final)
     mes_aleatorio = random.randint(1, 12)
-    dia_aleatorio = random.randint(1, 31)
+    dia_aleatorio = random.randint(1, 30)
 
     if mes_aleatorio == 2 and dia_aleatorio > 28:
         dia_aleatorio = 28
