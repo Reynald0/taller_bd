@@ -41,6 +41,11 @@ apellidos = ['Alirio', 'Suarez', 'Cordero', 'De Dios', 'De La Cruz', 'Alvarez',
 destinos = ['Balancan', 'Nacajuca', 'Macuspana', 'Tacotalpa', 'Centro',
             'Emiliano Zapata', 'Teapa', 'Huimanguillo', 'Cardenas', 'Comalcalco']
 
+alfabeto = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'm']
+
+lista_personas_rfc = []
+lista_barcos_matricula = []
+
 ruta = os.path.dirname(__file__)
 
 def generar_fecha_aleatoria(anio_inicio, anio_final):
@@ -80,8 +85,17 @@ def generar_hora_aleatoria():
 
     return '%d:%d:%d' %(hora,minuto,segundo)
 
+def generar_rfc():
+    rfc = ''
+    for numero in range(4):
+        rfc += random.choice(alfabeto).upper()
+    for numero in range(6):
+        rfc += str(random.randint(0,9))
+    return rfc
 
 def generar_persona(archivo):
+    rfc_aleatorio = generar_rfc()
+    lista_personas_rfc .append(rfc_aleatorio)
     nombre_aleatorio =  random.choice(nombres)
     fecha_aleatorio = generar_fecha_aleatoria(1995, 2000)
     apellido_paterno_aleatorio =  random.choice(apellidos)
@@ -89,32 +103,34 @@ def generar_persona(archivo):
     telefono_aleatorio = generar_telefono_aleatorio()
     socio_aleatorio = random.choice(['si', 'no'])
     sql = """INSERT INTO `personas`
-            (`nombre`, `apellido_paterno`, `apellido_materno`, `fecha_nac`, `tel`, `socio`)
-            VALUES ('%s', '%s', '%s', '%s', '%s', '%s');
-            """ %(nombre_aleatorio, apellido_paterno_aleatorio, apellido_materno_aleatorio,
+            (`rfc`, `nombre`, `apellido_paterno`, `apellido_materno`, `fecha_nac`, `tel`, `socio`)
+            VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s');
+            """ %(rfc_aleatorio, nombre_aleatorio, apellido_paterno_aleatorio, apellido_materno_aleatorio,
             fecha_aleatorio, telefono_aleatorio, socio_aleatorio)
     archivo.write(sql + '\n')
 
 def generar_barco(archivo):
+    matricula_aleatoria = "BA%d" %random.randint(1000,2000)
+    lista_barcos_matricula.append(matricula_aleatoria)
     nombre_aleatorio =  random.choice(nombres)
     amarre_aleatorio = random.randint(1, 2000)
     cuota_aleatoria = random.uniform(500.0, 8000.0)
-    sql = """INSERT INTO `barcos` (`nombre`, `numero_amarre`, `cuota_pago`)
-            VALUES ('%s', '%d', '%.2f');
-            """ %(nombre_aleatorio, amarre_aleatorio, cuota_aleatoria)
+    sql = """INSERT INTO `barcos` (`matricula`, `nombre`, `numero_amarre`, `cuota_pago`)
+            VALUES ('%s', '%s', '%d', '%.2f');
+            """ %(matricula_aleatoria, nombre_aleatorio, amarre_aleatorio, cuota_aleatoria)
     archivo.write(sql + '\n')
 
 def generar_salidas(archivo):
     #CUIDADO pueden duplicarse
-    personas_id_persona_aleatorio = random.randint(1, 20)
-    barcos_matricula_aleatorio = random.randint(1, 20)
+    persona_rfc_aleatorio = random.choice(lista_personas_rfc)
+    barcos_matricula_aleatoria = random.choice(lista_barcos_matricula)
     #CUIDADO pueden duplicarse
     fecha_aleatorio = generar_fecha_aleatoria(1995, 2020)
     hora_aleatoria = generar_hora_aleatoria()
     destino_aleatorio = random.choice(destinos)
-    sql = """INSERT INTO `barcos_salidas` (`personas_id_persona`, `barcos_matricula`, `fecha`, `hora`, `destino`)
-            VALUES ('%d', '%d', '%s', '%s', '%s');
-            """%(personas_id_persona_aleatorio, barcos_matricula_aleatorio, fecha_aleatorio, hora_aleatoria, destino_aleatorio)
+    sql = """INSERT INTO `barcos_salidas` (`rfc_persona`, `barcos_matricula`, `fecha`, `hora`, `destino`)
+            VALUES ('%s', '%s', '%s', '%s', '%s');
+            """%(persona_rfc_aleatorio, barcos_matricula_aleatoria, fecha_aleatorio, hora_aleatoria, destino_aleatorio)
     archivo.write(sql + '\n')
 
 def generar_sql(numero_registros):
