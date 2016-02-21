@@ -1,0 +1,174 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : localhost
+Source Server Version : 50711
+Source Host           : localhost:3306
+Source Database       : nautica
+
+Target Server Type    : MYSQL
+Target Server Version : 50711
+File Encoding         : 65001
+
+Date: 2016-02-18 17:58:09
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema nautica
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `nautica` ;
+
+-- -----------------------------------------------------
+-- Schema nautica
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `nautica` DEFAULT CHARACTER SET utf8 ;
+USE `nautica` ;
+
+-- ----------------------------
+-- Table structure for barcos
+-- ----------------------------
+DROP TABLE IF EXISTS `barcos`;
+CREATE TABLE `barcos` (
+  `matricula` varchar(10) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `numero_amarre` int(11) NOT NULL,
+  `cuota_pago` double NOT NULL,
+  PRIMARY KEY (`matricula`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of barcos
+-- ----------------------------
+INSERT INTO `barcos` VALUES ('BA1054', 'Emilio', '1478', '2474.74');
+INSERT INTO `barcos` VALUES ('BA1084', 'Paola', '987', '7172.32');
+INSERT INTO `barcos` VALUES ('BA1102', 'Valeria', '1298', '3329.98');
+INSERT INTO `barcos` VALUES ('BA1109', 'America', '165', '6250.3');
+INSERT INTO `barcos` VALUES ('BA1117', 'Isabela', '701', '2224.57');
+INSERT INTO `barcos` VALUES ('BA1121', 'Maximiliano', '772', '4251.52');
+INSERT INTO `barcos` VALUES ('BA1168', 'Elena', '1877', '5172.4');
+INSERT INTO `barcos` VALUES ('BA1171', 'Linda', '1440', '3616.8');
+INSERT INTO `barcos` VALUES ('BA1200', 'Jaime', '844', '4676.2');
+INSERT INTO `barcos` VALUES ('BA1211', 'Alexia', '1776', '4519.07');
+INSERT INTO `barcos` VALUES ('BA1232', 'Mateo', '1867', '4074.95');
+INSERT INTO `barcos` VALUES ('BA1242', 'Lucian', '439', '4077.79');
+INSERT INTO `barcos` VALUES ('BA1258', 'Israel', '313', '7885.85');
+INSERT INTO `barcos` VALUES ('BA1277', 'Abraham', '652', '7781.45');
+INSERT INTO `barcos` VALUES ('BA1345', 'Lia', '345', '4467.25');
+INSERT INTO `barcos` VALUES ('BA1402', 'Alicia', '1294', '2438.25');
+INSERT INTO `barcos` VALUES ('BA1404', 'Sara', '861', '4112.8');
+INSERT INTO `barcos` VALUES ('BA1451', 'Nicolas', '1941', '2820.72');
+INSERT INTO `barcos` VALUES ('BA1487', 'Ada', '885', '5419.7');
+INSERT INTO `barcos` VALUES ('BA1566', 'Marco', '1790', '5693.04');
+INSERT INTO `barcos` VALUES ('BA1581', 'Marina', '327', '2840.57');
+INSERT INTO `barcos` VALUES ('BA1590', 'Fernanda', '1858', '2525.93');
+INSERT INTO `barcos` VALUES ('BA1607', 'Fernanda', '1783', '882.44');
+INSERT INTO `barcos` VALUES ('BA1610', 'Fabian', '1333', '3356.65');
+INSERT INTO `barcos` VALUES ('BA1656', 'Roberto', '501', '1901.07');
+INSERT INTO `barcos` VALUES ('BA1663', 'Virginia', '72', '6657.9');
+INSERT INTO `barcos` VALUES ('BA1739', 'Pedro', '1782', '915.24');
+INSERT INTO `barcos` VALUES ('BA1856', 'Noe', '1273', '2440.39');
+INSERT INTO `barcos` VALUES ('BA1858', 'Tatiana', '218', '731.96');
+INSERT INTO `barcos` VALUES ('BA1902', 'Guillermo', '1884', '2736.6');
+
+-- ----------------------------
+-- Table structure for barcos_salidas
+-- ----------------------------
+DROP TABLE IF EXISTS `barcos_salidas`;
+CREATE TABLE `barcos_salidas` (
+  `rfc_persona` varchar(10) NOT NULL,
+  `barcos_matricula` varchar(10) NOT NULL,
+  `fecha` date NOT NULL,
+  `hora` time NOT NULL,
+  `destino` varchar(45) NOT NULL,
+  PRIMARY KEY (`rfc_persona`,`barcos_matricula`),
+  KEY `fk_personas_has_barcos_barcos1_idx` (`barcos_matricula`),
+  KEY `fk_personas_has_barcos_personas1_idx` (`rfc_persona`),
+  CONSTRAINT `fk_personas_has_barcos_barcos1` FOREIGN KEY (`barcos_matricula`) REFERENCES `barcos` (`matricula`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_personas_has_barcos_personas1` FOREIGN KEY (`rfc_persona`) REFERENCES `personas` (`rfc`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of barcos_salidas
+-- ----------------------------
+INSERT INTO `barcos_salidas` VALUES ('AIAD552513', 'BA1232', '2004-02-08', '13:21:05', 'Emiliano Zapata');
+INSERT INTO `barcos_salidas` VALUES ('AIAD552513', 'BA1242', '2005-02-11', '16:29:21', 'Nacajuca');
+INSERT INTO `barcos_salidas` VALUES ('CEIE997246', 'BA1902', '2014-11-05', '22:45:34', 'Macuspana');
+INSERT INTO `barcos_salidas` VALUES ('CKLJ610123', 'BA1902', '2002-08-11', '04:06:48', 'Huimanguillo');
+INSERT INTO `barcos_salidas` VALUES ('DFCH950877', 'BA1200', '2006-02-07', '03:04:48', 'Macuspana');
+INSERT INTO `barcos_salidas` VALUES ('DFCH950877', 'BA1232', '2020-10-02', '11:28:53', 'Cardenas');
+INSERT INTO `barcos_salidas` VALUES ('DIIJ695472', 'BA1345', '1995-06-16', '16:20:43', 'Huimanguillo');
+INSERT INTO `barcos_salidas` VALUES ('EACJ483884', 'BA1663', '2019-04-01', '24:44:10', 'Macuspana');
+INSERT INTO `barcos_salidas` VALUES ('EDBF467297', 'BA1109', '2013-12-27', '07:03:57', 'Teapa');
+INSERT INTO `barcos_salidas` VALUES ('EDBF467297', 'BA1232', '2010-06-27', '16:39:41', 'Huimanguillo');
+INSERT INTO `barcos_salidas` VALUES ('EDBF467297', 'BA1607', '2006-06-26', '05:48:05', 'Huimanguillo');
+INSERT INTO `barcos_salidas` VALUES ('EMBJ557200', 'BA1242', '2013-08-12', '22:18:12', 'Nacajuca');
+INSERT INTO `barcos_salidas` VALUES ('EMBJ557200', 'BA1610', '2014-11-19', '14:14:29', 'Huimanguillo');
+INSERT INTO `barcos_salidas` VALUES ('EMBJ557200', 'BA1663', '2004-09-01', '22:14:57', 'Balancan');
+INSERT INTO `barcos_salidas` VALUES ('FLMH862656', 'BA1856', '2008-10-26', '14:44:49', 'Nacajuca');
+INSERT INTO `barcos_salidas` VALUES ('JMHM533503', 'BA1109', '2012-10-18', '02:15:32', 'Nacajuca');
+INSERT INTO `barcos_salidas` VALUES ('LFAI034723', 'BA1451', '2004-11-22', '23:30:27', 'Nacajuca');
+INSERT INTO `barcos_salidas` VALUES ('LMLE981803', 'BA1487', '2015-10-05', '14:11:30', 'Centro');
+INSERT INTO `barcos_salidas` VALUES ('MAIJ720187', 'BA1232', '2014-08-27', '15:08:50', 'Nacajuca');
+INSERT INTO `barcos_salidas` VALUES ('MAIM669494', 'BA1232', '2016-06-05', '14:01:47', 'Macuspana');
+INSERT INTO `barcos_salidas` VALUES ('MAIM669494', 'BA1581', '2010-05-11', '21:40:33', 'Emiliano Zapata');
+INSERT INTO `barcos_salidas` VALUES ('MAIM669494', 'BA1739', '2013-12-09', '17:23:58', 'Emiliano Zapata');
+INSERT INTO `barcos_salidas` VALUES ('MJLH264839', 'BA1054', '2000-08-13', '08:30:51', 'Centro');
+INSERT INTO `barcos_salidas` VALUES ('MJLH264839', 'BA1566', '2018-10-13', '10:40:56', 'Tacotalpa');
+INSERT INTO `barcos_salidas` VALUES ('MJLH264839', 'BA1902', '2020-04-15', '23:18:01', 'Centro');
+
+-- ----------------------------
+-- Table structure for personas
+-- ----------------------------
+DROP TABLE IF EXISTS `personas`;
+CREATE TABLE `personas` (
+  `rfc` varchar(10) NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  `apellido_paterno` varchar(45) NOT NULL,
+  `apellido_materno` varchar(45) NOT NULL,
+  `fecha_nac` date NOT NULL,
+  `tel` varchar(45) NOT NULL,
+  `socio` varchar(2) NOT NULL,
+  PRIMARY KEY (`rfc`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of personas
+-- ----------------------------
+INSERT INTO `personas` VALUES ('AIAD552513', 'Elena', 'Alirio', 'Cordero', '1998-02-23', '9987653879', 'si');
+INSERT INTO `personas` VALUES ('AMKC324032', 'Gabriel', 'Jimenez', 'Contreras', '1997-06-25', '9949949432', 'no');
+INSERT INTO `personas` VALUES ('BBMG039362', 'Alfredo', 'Alvarez', 'Sixto', '1998-04-13', '9962697995', 'si');
+INSERT INTO `personas` VALUES ('BGJG814539', 'Isabella', 'Cordero', 'Alvarez', '1996-06-03', '9960762854', 'no');
+INSERT INTO `personas` VALUES ('CCEM283256', 'Victor', 'De Dios', 'Suarez', '2000-07-23', '9943841431', 'si');
+INSERT INTO `personas` VALUES ('CEIE997246', 'Sandra', 'De La Cruz', 'De La Cruz', '1995-11-01', '9962286762', 'no');
+INSERT INTO `personas` VALUES ('CKLJ610123', 'Jairo', 'Contreras', 'Jimenez', '2000-07-13', '9932773268', 'si');
+INSERT INTO `personas` VALUES ('DALH547074', 'Joaquin', 'Suarez', 'Herrera', '1995-10-12', '9953263950', 'si');
+INSERT INTO `personas` VALUES ('DFCH950877', 'Emiliano', 'De La Cruz', 'Cordero', '1995-08-04', '9981538338', 'no');
+INSERT INTO `personas` VALUES ('DIIJ695472', 'Israel', 'Suarez', 'De Dios', '1999-08-01', '9981203938', 'no');
+INSERT INTO `personas` VALUES ('EACJ483884', 'Elsa', 'De La Cruz', 'Jimenez', '1997-02-16', '9932517287', 'no');
+INSERT INTO `personas` VALUES ('EDBF467297', 'Ruben', 'De La Cruz', 'Jimenez', '2000-05-10', '9997384647', 'si');
+INSERT INTO `personas` VALUES ('EGGF549945', 'Alina', 'Sanchez', 'Contreras', '1998-12-28', '9910665070', 'si');
+INSERT INTO `personas` VALUES ('EGMA110456', 'Amaya', 'Contreras', 'Villegas', '1999-05-17', '9974604231', 'si');
+INSERT INTO `personas` VALUES ('EMBJ557200', 'Luis', 'De Dios', 'Jimenez', '1995-04-24', '9968384791', 'no');
+INSERT INTO `personas` VALUES ('FBLA376692', 'Noe', 'De La Cruz', 'Jimenez', '1996-04-14', '9971529299', 'si');
+INSERT INTO `personas` VALUES ('FLMH862656', 'Miranda', 'Villegas', 'Alirio', '1995-12-07', '9977106812', 'si');
+INSERT INTO `personas` VALUES ('GJJB452660', 'Tobias', 'Villegas', 'De Dios', '1999-02-28', '9910319647', 'no');
+INSERT INTO `personas` VALUES ('IEHC303916', 'Amanda', 'Villegas', 'Villegas', '1999-12-15', '9955807925', 'si');
+INSERT INTO `personas` VALUES ('IKCH898325', 'Mario', 'Suarez', 'Contreras', '1997-12-18', '9976367469', 'si');
+INSERT INTO `personas` VALUES ('JMHM533503', 'Matias', 'Villegas', 'Cordero', '1997-02-16', '9915182693', 'si');
+INSERT INTO `personas` VALUES ('KCMM970213', 'Sebastian', 'Sanchez', 'Alirio', '1995-02-11', '9980622166', 'no');
+INSERT INTO `personas` VALUES ('LBJI891183', 'Rafael', 'Jimenez', 'De Dios', '1996-11-22', '9916794245', 'no');
+INSERT INTO `personas` VALUES ('LFAI034723', 'Natalia', 'De Dios', 'Villegas', '2000-01-25', '9919482255', 'no');
+INSERT INTO `personas` VALUES ('LFGM771604', 'Juliana', 'Sanchez', 'Alvarez', '1997-11-01', '9957446061', 'no');
+INSERT INTO `personas` VALUES ('LGHB714834', 'Adrian', 'Sanchez', 'Villegas', '2000-11-30', '9992868548', 'no');
+INSERT INTO `personas` VALUES ('LMLE981803', 'Vivian', 'De La Cruz', 'Contreras', '1998-06-08', '9968889570', 'no');
+INSERT INTO `personas` VALUES ('MAIJ720187', 'Angelica', 'Cordero', 'Herrera', '1997-02-07', '9939966180', 'no');
+INSERT INTO `personas` VALUES ('MAIM669494', 'Rafael', 'Herrera', 'Alirio', '2000-12-14', '9993385142', 'no');
+INSERT INTO `personas` VALUES ('MJLH264839', 'Eliana', 'De La Cruz', 'Villegas', '2000-01-02', '9982856587', 'no');
